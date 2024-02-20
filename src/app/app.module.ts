@@ -28,6 +28,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { AuthInterceptorProviders } from './service/auth.interseptor';
 import { Home2Component } from './home2/home2.component';
+import { SchedulerComponent } from './scheduler/scheduler.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { Home2Component } from './home2/home2.component';
     ActiveModalComponent,
     CustomModal,
     LoginComponent,
-    Home2Component
+    Home2Component,
+    SchedulerComponent
   ],
   imports: [
     BrowserModule,

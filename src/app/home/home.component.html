@@ -3,12 +3,22 @@
   <div *ngIf="!isUserAdmin()">
     <button
       type="button"
-      (click)="opennConnectModal(table)"
       class="btn btn-success"
+      (click)="opennConnectModal(table)"
+      *ngIf="!showAddBatch"
     >
-      Open Batch
+      <!-- <a href="/scheduler">Open Batch</a> -->
+      Open batch
     </button>
   </div>
+</div>
+<div class="schedulerId" *ngIf="showAddBatch">
+  <label for="scheduler-id">Add Scheduler Id</label>
+  <input type="text" name="" id="sceduler" #scheduler />
+  <button type="submit" (click)="showAddBatch = false; matchedTables = []">
+    Cancel
+  </button>
+  <button type="submit" (click)="getSchedulerData(scheduler)">Ok</button>
 </div>
 <!-- <button type="button" (click)="checkingSchedule()" class="btn btn-success">
     Schedule checker
@@ -19,16 +29,17 @@
   <button type="button" (click)="importJSONDATA()" class="btn btn-success">
     importer
   </button> -->
-<div *ngIf="tableName">
+<div *ngIf="matchedTables.length > 0 && showAddBatch">
   <table>
     <tr>
       <th>Table Name</th>
-      <th></th>
+      <th>Database Name</th>
     </tr>
-    <tr>
-      <td>{{ tableName }}</td>
+    <tr *ngFor="let _table of matchedTables; let i = index">
+      <td>{{ _table.tableName }}</td>
+      <td>{{ _table.databaseName }}</td>
       <td>
-        <button (click)="SaveTable()" class="btn btn-success">
+        <button (click)="SaveTable(_table, i)" class="btn btn-success">
           INSERT DATA
         </button>
       </td>

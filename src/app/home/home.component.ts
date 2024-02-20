@@ -60,6 +60,8 @@ export const MODALS: { [name: string]: Type<any> } = {
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
+  public showAddBatch: boolean = false;
+  public matchedTables: any[] = [];
   interval: any = null;
   jsonData: any = [];
   databaseName: any;
@@ -114,39 +116,36 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-
+  getSchedulerData(scheduler: HTMLInputElement) {
+    const schedulerId = scheduler.value;
+    this.jsonService.getJsondata(schedulerId).subscribe((data) => {
+      this.importJSONDATA(data[0]);
+      this.jsonData = data;
+      this.objectVar = schedulerId;
+      return this.jsonData;
+    });
+  }
   opennConnectModal(table: any) {
     // table = "label_data2";
     // console.log(table);
-    const connectModal = this.modalService.open(CUSTOM_MODALS["customModal"], {
-      ariaLabelledBy: "modal-basic-title",
-    });
-    connectModal.componentInstance.data = this.scheduleIdList;
+    // const connectModal = this.modalService.open(CUSTOM_MODALS["customModal"], {
+    //   ariaLabelledBy: "modal-basic-title",
+    // });
+    // connectModal.componentInstance.data = this.scheduleIdList;
 
-    connectModal.result.then(
-      (obj) => {
-        this.jsonService
-          .getJsondata(Object.values(obj)[0])
-          .subscribe((data) => {
-            this.importJSONDATA(data[0]);
-            this.jsonData = data;
-            this.objectVar = obj;
-            return this.jsonData;
-            return this.objectVar;
-          }),
-          //   this.connectTable(table, obj);
-          // console.log(Object.values(obj)[0]);
-          console.log("OCM running");
-      },
-      (reason) => {}
-    );
+    // connectModal.result.then(
+    //   (obj) => {
+
+    //   },
+    //   (reason) => {}
+    // );
+    this.showAddBatch = true;
   }
-  SaveTable() {
+  SaveTable(table, index) {
     // table = "label_data2";
-    console.log(this.objectVar);
-    console.log(this.tableName);
+    this.matchedTables = this.matchedTables.splice(index, 1);
     // console.log(table);
-    this.connectTable(this.tableName, this.objectVar);
+    this.connectTable(table.tableName, table);
   }
   connectTable(tableName: any, obj: any) {
     // this.interval = setInterval(() => {
@@ -155,11 +154,11 @@ export class HomeComponent implements OnInit {
       (res) => {
         const queryParams = {
           tableName: tableName,
-          dbName: this.dbName,
+          dbName: obj.databaseName,
         };
         console.log(res);
         console.log(queryParams);
-        this.insertData(obj, res.body, queryParams);
+        this.insertData(res.body, this.jsonData, queryParams);
       },
       (err) => {
         clearInterval(this.interval);
@@ -228,22 +227,24 @@ export class HomeComponent implements OnInit {
     this.webApiService.importJsonData(data).subscribe(
       (response) => {
         console.log("Import JSON Response:", response);
-        this.tableName = response.body.tableName;
-        this.dbName = response.body.databaseName;
-        console.log(this.tableName);
+        this.matchedTables = response.body;
+        // this.tableName = response.body.tableName;
+        // this.dbName = response.body.databaseName;
+        // console.log(this.tableName);
         // Handle the response as needed
 
         // Assuming the response has tableName and databaseName properties
-        if (response && response.body.tableName && response.body.databaseName) {
+        if (response.body) {
+          //&& response.body.tableName && response.body.databaseName
           console.log(
-            `Identified Table: ${response.body.tableName} in Database: ${response.databaseName}`
+            `Identified Table: ${response.body
+              ?.map((table) => table.tableName)
+              .join()} in Database: ${response.databaseName}`
           );
-          this.toastr.success(
-            `Identified Table: ${response.body.tableName} in Database: ${response.body.databaseName}`
-          );
+          this.toastr.success(`Database match found`);
         } else {
           console.error("Invalid response format:", response);
-          this.toastr.error("Invalid response format");
+          this.toastr.error("Table not found please ask Admin to create.");
         }
 
         this.importingInProgress = false;

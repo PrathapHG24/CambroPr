@@ -1,17 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { Observable, throwError } from "rxjs";
+import { map } from "rxjs/operators";
+import { catchError } from "rxjs/internal/operators/catchError";
+import { HttpHeaders, HttpClient } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class WebApiService {
-
-
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   // Get call method
   // Param 1 : authToken
@@ -19,21 +16,17 @@ export class WebApiService {
   get(url: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Cache-Control' : 'no-cache',
-        'Pragma' : 'no-cache'
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
       }),
-      observe: "response" as 'body'
+      observe: "response" as "body",
     };
 
-    return this.httpClient.get(
-      url,
-      httpOptions
-    )
-      .pipe(
-        map((response: any) => this.ReturnResponseData(response)),
-        catchError(this.handleError)
-      );
+    return this.httpClient.get(url, httpOptions).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
   }
 
   // Post call method
@@ -43,60 +36,48 @@ export class WebApiService {
   post(url: string, model: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       }),
       // observe: "response" as 'body'
     };
 
-    return this.httpClient.post(
-      url,
-      model,
-      httpOptions)
-      .pipe(
-        map((response: any) => this.ReturnResponseData(response)),
-        catchError(this.handleError)
-      );
+    return this.httpClient.post(url, model, httpOptions).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
   }
 
   delete(url: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
+        "Content-Type": "application/json",
         // 'Cache-Control' : 'no-cache',
         // 'Pragma' : 'no-cache'
       }),
-      observe: "response" as 'body'
+      observe: "response" as "body",
     };
 
-    return this.httpClient.delete(
-      url,
-      httpOptions
-    )
-      .pipe(
-        map((response: any) => this.ReturnResponseData(response)),
-        catchError(this.handleError)
-      );
+    return this.httpClient.delete(url, httpOptions).pipe(
+      map((response: any) => this.ReturnResponseData(response)),
+      catchError(this.handleError)
+    );
   }
 
   importJsonData(jsonInput: any): Observable<any> {
-    const url = 'http://localhost:8080/api/identify'; 
+    const url = "http://localhost:8080/api/identify";
 
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       }),
-      observe: 'response' as 'body'
+      observe: "response" as "body",
     };
 
-    return this.httpClient.post(
-      url,
-      jsonInput,
-      httpOptions
-    ).pipe(
+    return this.httpClient.post(url, jsonInput, httpOptions).pipe(
       map((response: any) => this.ReturnResponseData(response)),
       catchError(this.handleError)
-    );
-  }
+    );
+  }
   private ReturnResponseData(response: any) {
     return response;
   }
@@ -104,5 +85,4 @@ export class WebApiService {
   private handleError(error: any) {
     return throwError(error);
   }
-
 }
