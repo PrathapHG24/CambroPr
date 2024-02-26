@@ -6,6 +6,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { MODALS } from "../home/home.component";
 import { CUSTOM_MODALS } from "../shared/modal/custom-modal.component";
 import { LoginService } from "../service/login.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-database-view",
@@ -24,7 +25,8 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private httpProvider: HttpProviderService,
     private modalService: NgbModal,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private toastr: ToastrService
   ) {}
 
   reload() {
@@ -69,6 +71,7 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
       .subscribe(
         (response: any) => {
           console.log("response", response);
+          this.toastr.success(response.body.data)
           this.getdatabaseDetailByName();
         },
         (error: any) => {}
@@ -97,7 +100,7 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
   }
   connectTable(table: any, obj: any) {
     // this.interval = setInterval(() => {
-    this.httpProvider.connectTable(obj.scheduleId).subscribe(
+    this.httpProvider.fetchScheduleIdData(obj.scheduleId).subscribe(
       (res) => {
         const queryParams = {
           tableName: table.name,
@@ -132,6 +135,12 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
     this.httpProvider.fetchAllScheduelIds().subscribe((res) => {
       console.log(res);
       this.scheduleIdList = res.body;
+    });
+  }
+
+  backupDatabase(table) {
+    this.httpProvider.saveDBBackup(table.name).subscribe((res) => {
+      this.toastr.success('DB backup sucessfully')
     });
   }
 

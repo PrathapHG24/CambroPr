@@ -27,7 +27,7 @@ export class AdddatabaseComponent implements OnInit {
     this.isSubmitted = true;
     if (isValid) {
       console.log("Database Name is:",this.adddatabaseForm);
-      this.toastr.info('Creating database', '', { timeOut: 2500 })
+      this.toastr.info('Database created Successfully', '', { timeOut: 2500 })
       this.httpProvider.savedatabase(this.adddatabaseForm).subscribe(async data => {
         if (data != null && data.body != null) {
           if (data != null && data.body != null) {

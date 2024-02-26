@@ -57,7 +57,7 @@ export class HttpProviderService {
     return this.webApiService.post(apiUrl, model);
   }
 
-  public connectTable(scheduleId: string) {
+  public fetchScheduleIdData(scheduleId: string) {
 
     const url = `http://localhost:8081/unattendedops.cambro.com/api/LabelData/GetLabelData/${scheduleId}`
     return this.webApiService.get(url);
@@ -78,6 +78,11 @@ export class HttpProviderService {
   fetchAllScheduelIds() {
     const url = `http://localhost:8080/mapping/getAllScheduleId`;
     return this.webApiService.get(url);
+  }
+
+  saveDBBackup(tableName:string) {
+    const url = `http://localhost:8080/unattendedops.cambro.com/api/LabelData/table/${tableName}`;
+    return this.webApiService.post(url, null);
   }
 
   // /api/{{selectedDatabas}}/table/create/manoj

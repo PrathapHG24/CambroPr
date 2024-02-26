@@ -14,11 +14,15 @@
 </div>
 <div class="schedulerId" *ngIf="showAddBatch">
   <label for="scheduler-id">Add Scheduler Id</label>
-  <input type="text" name="" id="sceduler" #scheduler />
-  <button type="submit" (click)="showAddBatch = false; matchedTables = []">
+  <input type="text" name="" id="sceduler" [(ngModel)]="schedulerId" />
+  <!-- <button type="submit" (click)="showAddBatch = false; matchedTables = []">
+    Cancel
+  </button> -->
+  <button type="button" (click)="clearSchedulerId()">
     Cancel
   </button>
-  <button type="submit" (click)="getSchedulerData(scheduler)">Ok</button>
+  <button type="button" (click)="getSchedulerData()" *ngIf="!selectedTable">Ok</button>
+  <button type="button" (click)="insertDataInSelectedTable()" *ngIf="selectedTable && selectedTable.tableName">Insert</button>
 </div>
 <!-- <button type="button" (click)="checkingSchedule()" class="btn btn-success">
     Schedule checker
@@ -38,14 +42,17 @@
     <tr *ngFor="let _table of matchedTables; let i = index">
       <td>{{ _table.tableName }}</td>
       <td>{{ _table.databaseName }}</td>
-      <td>
+      <td *ngIf="!selectedTable">
         <button (click)="SaveTable(_table, i)" class="btn btn-success">
           INSERT DATA
         </button>
       </td>
     </tr>
   </table>
+  <button  class="btn btn-info" style="margin:1rem auto;" (click)="onCloseBatch()">Close Batch</button>
 </div>
+
+  
 
 <div *ngIf="isUserAdmin()">
   <div class="container-xl">
@@ -110,7 +117,7 @@
           </tbody>
         </table>
       </div>
-      <div class="json-import-section">
+      <!-- <div class="json-import-section">
         <h4><b>Import JSON</b></h4>
         <textarea
           [(ngModel)]="jsonInput"
@@ -119,7 +126,7 @@
           cols="50"
         ></textarea>
         <button class="btn btn-success" (click)="importJSON()">Import</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

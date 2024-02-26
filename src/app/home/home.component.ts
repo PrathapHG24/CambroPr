@@ -64,14 +64,11 @@ export class HomeComponent implements OnInit {
   public matchedTables: any[] = [];
   interval: any = null;
   jsonData: any = [];
-  databaseName: any;
   objectVar: any = {};
   inputScheduleId: string = "";
-  scheduleIdList: any[] = [];
-  tableName: string = "";
-  dbName: string = "";
   closeResult = "";
   savedDataSuccess: any;
+  schedulerId = '';
   databaseList: any = [
     {
       id: 1,
@@ -82,6 +79,7 @@ export class HomeComponent implements OnInit {
       name: "second db",
     },
   ];
+  selectedTable = null;
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -116,14 +114,23 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-  getSchedulerData(scheduler: HTMLInputElement) {
-    const schedulerId = scheduler.value;
-    this.jsonService.getJsondata(schedulerId).subscribe((data) => {
+  getSchedulerData() {
+    this.jsonService.getJsondata(this.schedulerId).subscribe((data) => {
       this.importJSONDATA(data[0]);
       this.jsonData = data;
-      this.objectVar = schedulerId;
+      this.objectVar = this.schedulerId;
       return this.jsonData;
     });
+  }
+
+  clearSchedulerId() {
+    this.schedulerId = '';
+  }
+
+  onCloseBatch() {
+    this.showAddBatch = false;
+    this.matchedTables = [];
+    this.clearSchedulerId();
   }
   opennConnectModal(table: any) {
     // table = "label_data2";
@@ -142,23 +149,25 @@ export class HomeComponent implements OnInit {
     this.showAddBatch = true;
   }
   SaveTable(table, index) {
+    console.log('table', table)
     // table = "label_data2";
     this.matchedTables = this.matchedTables.splice(index, 1);
     // console.log(table);
-    this.connectTable(table.tableName, table);
+    this.getScheduleIdData(table);
   }
-  connectTable(tableName: any, obj: any) {
+
+  getScheduleIdData(table: any) {
+    this.selectedTable = table;
     // this.interval = setInterval(() => {
-    console.log(this.dbName);
-    this.httpProvider.connectTable(obj.scheduleId).subscribe(
+    this.httpProvider.fetchScheduleIdData(this.schedulerId).subscribe(
       (res) => {
         const queryParams = {
-          tableName: tableName,
-          dbName: obj.databaseName,
+          tableName: table.tableName,
+          dbName: table.databaseName,
         };
         console.log(res);
         console.log(queryParams);
-        this.insertData(res.body, this.jsonData, queryParams);
+        this.insertData(res.body, res.body, queryParams);
       },
       (err) => {
         clearInterval(this.interval);
@@ -189,6 +198,10 @@ export class HomeComponent implements OnInit {
         clearInterval(this.interval);
       }
     );
+  }
+
+  insertDataInSelectedTable() {
+    this.getScheduleIdData(this.selectedTable)
   }
 
   isUserAdmin(): boolean {
@@ -251,8 +264,13 @@ export class HomeComponent implements OnInit {
       },
       (error) => {
         console.error("Import JSON Error:", error);
-        this.toastr.error("Error during import");
         this.importingInProgress = false;
+        if (error.status === 404) {
+          this.toastr.error("Table not found please ask Admin to create.");
+        }
+        else {
+          this.toastr.error("Error during import");
+        }
       }
     );
   }
@@ -294,8 +312,8 @@ export class HomeComponent implements OnInit {
   deletedatabase(database: any) {
     console.log(database);
     this.httpProvider.dropDatabaseByName(database).subscribe(
-      (data: any) => {
-        // this.toastr.success(resultData.message);
+      (res: any) => {
+        this.toastr.success(res.body.data);
 
         this.getAlldatabase();
       },
