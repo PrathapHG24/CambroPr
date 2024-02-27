@@ -2,7 +2,6 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12) !important;
     padding: 0px;
     margin-top: 2%;
-    width: 50%;
 
     .table-responsive {
         margin: 30px 0;
@@ -18,10 +17,11 @@
                 background: #64437d;
                 color: #fff;
                 padding: 16px 30px;
-                min-width: 100%;
+                // min-width: 100%;
                 margin: -20px -25px 10px;
                 border-radius: 3px 3px 0 0;
-
+                // position: fixed;
+                // width: 93%;
                 .back {
                     float: right;
                     text-transform: uppercase;
@@ -30,7 +30,7 @@
             }
 
             .table-content {
-                margin-top: 30px;
+                margin-top: 4rem;
 
                 .padding10 {
                     padding: 10px;

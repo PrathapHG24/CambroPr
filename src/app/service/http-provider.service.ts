@@ -12,9 +12,8 @@ var httpLink = {
   getdatabaseDetailByName: apiUrl + "/api/database/getdatabaseDetailByName",
   savedatabase: apiUrl + "/database/savedatabase",
   createTable: apiUrl + "/api",
-  dropTableByName: apiUrl + "/api/dropTable"
-  
-
+  dropTableByName: apiUrl + "/api/dropTable",
+ 
 }
 
 
@@ -81,8 +80,8 @@ export class HttpProviderService {
   }
 
   saveDBBackup(tableName:string) {
-    const url = `http://localhost:8080/unattendedops.cambro.com/api/LabelData/table/${tableName}`;
-    return this.webApiService.post(url, null);
+    const url = `api/takebackup/table/${tableName}`;
+    return this.webApiService.get(url);
   }
 
   // /api/{{selectedDatabas}}/table/create/manoj

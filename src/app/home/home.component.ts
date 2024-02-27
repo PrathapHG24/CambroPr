@@ -131,6 +131,7 @@ export class HomeComponent implements OnInit {
     this.showAddBatch = false;
     this.matchedTables = [];
     this.clearSchedulerId();
+    this.selectedTable = null;
   }
   opennConnectModal(table: any) {
     // table = "label_data2";
