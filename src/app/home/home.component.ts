@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit {
     },
   ];
   selectedTable = null;
+  insertDataResponse = [];
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -128,10 +129,22 @@ export class HomeComponent implements OnInit {
   }
 
   onCloseBatch() {
-    this.showAddBatch = false;
-    this.matchedTables = [];
-    this.clearSchedulerId();
-    this.selectedTable = null;
+    this.updateEndTime();
+  }
+
+  updateEndTime() {
+    console.log('updateEndTime', this.selectedTable)
+    const queryParams = {
+      dbName: this.selectedTable.databaseName,
+      tableName: this.selectedTable.tableName,
+      schedulerId: this.schedulerId
+    }
+    this.httpProvider.updateEndTime(queryParams).subscribe(data => {
+      this.showAddBatch = false;
+      this.matchedTables = [];
+      this.clearSchedulerId();
+      this.selectedTable = null;
+    })
   }
   opennConnectModal(table: any) {
     // table = "label_data2";
@@ -185,15 +198,16 @@ export class HomeComponent implements OnInit {
           return;
         }
         clearInterval(this.interval);
-        this.httpProvider.saveScheduleId(obj.scheduleId).subscribe((res) => {
-          this.savedDataSuccess = res;
-          console.log(res);
-          this.savedDataSuccess = Object.values(res)[1];
-          this.toastr.success(`Data inserted successfully`);
-          console.log(this.savedDataSuccess);
-          // console.log(Object.values(this.savedDataSuccess)[1]);
-          return this.savedDataSuccess;
-        });
+        // this.httpProvider.saveScheduleId(obj.scheduleId).subscribe((res) => {
+        //   console.log(res);
+        //   this.toastr.success(`Data inserted successfully`);
+        //   // console.log(Object.values(this.savedDataSuccess)[1]);
+        // });
+        if (res.data) {
+          this.insertDataResponse = res.data[0];
+        }
+        console.log('this.insertDataResponse', this.insertDataResponse)
+        this.toastr.success(res.message);
       },
       (err) => {
         clearInterval(this.interval);
@@ -202,7 +216,11 @@ export class HomeComponent implements OnInit {
   }
 
   insertDataInSelectedTable() {
-    this.getScheduleIdData(this.selectedTable)
+    if (this.selectedTable) {
+      if (this.schedulerId.length === 13) {
+        this.getScheduleIdData(this.selectedTable);
+      }
+    }
   }
 
   isUserAdmin(): boolean {
@@ -216,6 +234,10 @@ export class HomeComponent implements OnInit {
 
   AddDatabase() {
     this.router.navigate(["Adddatabase"]);
+  }
+
+  addUser() {
+    this.router.navigate(["adduser"]);
   }
 
   deletedatabaseConfirmation(database: any) {

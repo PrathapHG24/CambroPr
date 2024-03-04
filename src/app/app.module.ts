@@ -29,12 +29,14 @@ import {MatCardModule} from '@angular/material/card';
 import { AuthInterceptorProviders } from './service/auth.interseptor';
 import { Home2Component } from './home2/home2.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
+import { AddUserComponent } from './add-user/add-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AdddatabaseComponent,
+    AddUserComponent,
     EditdatabaseComponent,
     DynamicTableComponent,
     DatabaseViewComponent,

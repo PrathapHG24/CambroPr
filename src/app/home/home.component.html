@@ -14,15 +14,15 @@
 </div>
 <div class="schedulerId" *ngIf="showAddBatch">
   <label for="scheduler-id">Add Scheduler Id</label>
-  <input type="text" name="" id="sceduler" [(ngModel)]="schedulerId" />
+  <input type="text" name="" id="sceduler" [(ngModel)]="schedulerId" (input)="insertDataInSelectedTable()"/>
   <!-- <button type="submit" (click)="showAddBatch = false; matchedTables = []">
     Cancel
   </button> -->
-  <button type="button" (click)="clearSchedulerId()">
+  <button type="button" (click)="clearSchedulerId()" *ngIf="!selectedTable">
     Cancel
   </button>
   <button type="button" (click)="getSchedulerData()" *ngIf="!selectedTable">Ok</button>
-  <button type="button" (click)="insertDataInSelectedTable()" *ngIf="selectedTable && selectedTable.tableName">Insert</button>
+  <!-- <button type="button" (click)="insertDataInSelectedTable()" *ngIf="selectedTable && selectedTable.tableName">Insert</button> -->
 </div>
 <!-- <button type="button" (click)="checkingSchedule()" class="btn btn-success">
     Schedule checker
@@ -34,6 +34,7 @@
     importer
   </button> -->
 <div *ngIf="matchedTables.length > 0 && showAddBatch">
+  <!-- <p>Schedule Id: {{schedulerId}}</p> -->
   <table>
     <tr>
       <th>Table Name</th>
@@ -49,6 +50,21 @@
       </td>
     </tr>
   </table>
+
+  <div *ngIf="selectedTable" class="insertData">
+    <table>
+      <tr>
+        <th *ngFor="let item of insertDataResponse | keyvalue">
+          {{item.key}}
+        </th>
+      </tr>
+      <tr>
+        <td *ngFor="let item of insertDataResponse | keyvalue">
+          {{item.value}}
+        </td>
+      </tr>
+    </table>
+  </div>
   <button  class="btn btn-info" style="margin:1rem auto;" (click)="onCloseBatch()">Close Batch</button>
 </div>
 
@@ -64,12 +80,20 @@
               <h4><b>Available Databases</b></h4>
             </div>
             <div class="col-sm-6">
+              
+              <button
+                *ngIf="isUserAdmin()"
+                class="btn btn-success"
+                (click)="addUser()"
+              >
+                <i class="fas fa-plus-circle"></i><span> Add User</span>
+              </button>
               <button
                 *ngIf="isUserAdmin()"
                 class="btn btn-success"
                 (click)="AddDatabase()"
               >
-                <i class="fas fa-plus-circle"></i><span> ADD</span>
+                <i class="fas fa-plus-circle"></i><span> Add Database</span>
               </button>
               <button class="btn btn-success" (click)="reload()" *ngIf="false">
                 <i class="fas fa-plus-circle"></i><span> Reload</span>

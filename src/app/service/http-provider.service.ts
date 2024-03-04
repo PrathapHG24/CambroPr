@@ -11,6 +11,7 @@ var httpLink = {
   dropDatabaseByName: apiUrl + "/api/dropDatabase",
   getdatabaseDetailByName: apiUrl + "/api/database/getdatabaseDetailByName",
   savedatabase: apiUrl + "/database/savedatabase",
+  adduser: "http://localhost:8080/user/",
   createTable: apiUrl + "/api",
   dropTableByName: apiUrl + "/api/dropTable",
  
@@ -40,6 +41,10 @@ export class HttpProviderService {
 
   public savedatabase(model: any): Observable<any> {
     return this.webApiService.post(httpLink.savedatabase, model);
+  }
+
+  public addUser(payload: any): Observable<any> {
+    return this.webApiService.post(httpLink.adduser, payload);
   }
   public dropTableByName(model: { dbName: string; tableName: string }): Observable<any> {
     const url = `${httpLink.dropTableByName}/dbName=${model.dbName}/tableName=${model.tableName}`;
@@ -82,6 +87,11 @@ export class HttpProviderService {
   saveDBBackup(tableName:string) {
     const url = `api/takebackup/table/${tableName}`;
     return this.webApiService.get(url);
+  }
+
+  updateEndTime(queryParams:any) {
+    const url = `http://localhost:8080/mapping/updateEndTime?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}&scheduleID=${queryParams.schedulerId}`;
+    return this.webApiService.post(url, null);
   }
 
   // /api/{{selectedDatabas}}/table/create/manoj

@@ -6,15 +6,15 @@ import { HttpProviderService } from '../service/http-provider.service';
 import { FormValidationMessages } from '../common.service';
 
 @Component({
-  selector: 'app-add-database',
-  templateUrl: './add-database.component.html',
-  styleUrls: ['./add-database.component.scss']
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.scss']
 })
-export class AdddatabaseComponent implements OnInit {
-  adddatabaseForm: databaseForm = new databaseForm();
+export class AddUserComponent implements OnInit {
+  addUserForm: userFormModel = new userFormModel();
 
-  @ViewChild("databaseForm")
-  databaseForm!: NgForm;
+  @ViewChild("userForm")
+  userForm!: NgForm;
 
   isSubmitted: boolean = false;
 
@@ -23,19 +23,18 @@ export class AdddatabaseComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  Adddatabase(isValid: any) {
+  onAddUser(isValid: any) {
     this.isSubmitted = true;
     if (isValid) {
-      console.log("Database Name is:",this.adddatabaseForm);
-     
-      this.httpProvider.savedatabase(this.adddatabaseForm).subscribe(res => {
+      console.log("User Name is:",this.addUserForm);
+      this.httpProvider.addUser(this.addUserForm).subscribe(res => {
           this.toastr.clear();
-          this.toastr.success(res.data, '', { timeOut: 2000 });
+          this.toastr.success('User created Successfully', '', { timeOut: 2500 })
           setTimeout(() => {
             this.router.navigate(['/Home']);
-          }, 500)
+          }, 500);
       },
-        error => {
+       error => {
           this.toastr.error(error.message);
           setTimeout(() => {
             this.router.navigate(['/Home']);
@@ -46,7 +45,8 @@ export class AdddatabaseComponent implements OnInit {
 
 }
 
-export class databaseForm {
-  dbName: string = "";
+export class userFormModel {
+  userName: string = "";
+  password: string = "";
 }
 // ^ [a - zA - Z_][a - zA - Z0 -9_] * $

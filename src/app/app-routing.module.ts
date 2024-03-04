@@ -9,6 +9,7 @@ import { AddTableFormComponent } from "./add-table-form/add-table-form.component
 import { LoginComponent } from "./login/login.component";
 import { Home2Component } from "./home2/home2.component";
 import { SchedulerComponent } from "./scheduler/scheduler.component";
+import { AddUserComponent } from "./add-user/add-user.component";
 
 const routes: Routes = [
   // { path: '', redirectTo: 'Home', pathMatch: 'full' },
@@ -25,6 +26,7 @@ const routes: Routes = [
   },
   { path: "add-new-table", component: AddTableFormComponent },
   { path: "Adddatabase", component: AdddatabaseComponent },
+  { path: "adduser", component: AddUserComponent },
   { path: "Editdatabase/:database", component: EditdatabaseComponent },
   { path: "edit-table/:database", component: EditdatabaseComponent },
   { path: "scheduler", component: SchedulerComponent },
