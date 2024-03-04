@@ -50,10 +50,51 @@ export class NgModalConfirm {
   constructor(public modal: NgbActiveModal) {}
 }
 
+@Component({
+  selector: "ng-modal-confirm-close-batch",
+  template: `
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-title">Close Batch Confirmation</h5>
+      <button
+        type="button"
+        class="btn close"
+        aria-label="Close button"
+        aria-describedby="modal-title"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to close the batch?</p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.dismiss('cancel click')"
+      >
+        CANCEL
+      </button>
+      <button
+        type="button"
+        ngbAutofocus
+        class="btn btn-success"
+        (click)="modal.close('Ok click')"
+      >
+        OK
+      </button>
+    </div>
+  `,
+})
+export class NgModalConfirmCloseBatch {
+  constructor(public modal: NgbActiveModal) {}
+}
+
 export const MODALS: { [name: string]: Type<any> } = {
   deleteModal: NgModalConfirm,
+  closeBatchModal: NgModalConfirmCloseBatch,
 };
-
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -68,7 +109,7 @@ export class HomeComponent implements OnInit {
   inputScheduleId: string = "";
   closeResult = "";
   savedDataSuccess: any;
-  schedulerId = '';
+  schedulerId = "";
   databaseList: any = [
     {
       id: 1,
@@ -125,7 +166,23 @@ export class HomeComponent implements OnInit {
   }
 
   clearSchedulerId() {
-    this.schedulerId = '';
+    this.schedulerId = "";
+  }
+
+  onCloseBatchConfirmation() {
+    this.modalService
+      .open(MODALS["closeBatchModal"], {
+        ariaLabelledBy: "modal-basic-title",
+      })
+      .result.then(
+        (result) => {
+          console.log("Close batch confirmed");
+          this.onCloseBatch();
+        },
+        (reason) => {
+          console.log("Close batch cancelled");
+        }
+      );
   }
 
   onCloseBatch() {
@@ -133,18 +190,18 @@ export class HomeComponent implements OnInit {
   }
 
   updateEndTime() {
-    console.log('updateEndTime', this.selectedTable)
+    console.log("updateEndTime", this.selectedTable);
     const queryParams = {
       dbName: this.selectedTable.databaseName,
       tableName: this.selectedTable.tableName,
-      schedulerId: this.schedulerId
-    }
-    this.httpProvider.updateEndTime(queryParams).subscribe(data => {
+      schedulerId: this.schedulerId,
+    };
+    this.httpProvider.updateEndTime(queryParams).subscribe((data) => {
       this.showAddBatch = false;
       this.matchedTables = [];
       this.clearSchedulerId();
       this.selectedTable = null;
-    })
+    });
   }
   opennConnectModal(table: any) {
     // table = "label_data2";
@@ -163,7 +220,7 @@ export class HomeComponent implements OnInit {
     this.showAddBatch = true;
   }
   SaveTable(table, index) {
-    console.log('table', table)
+    console.log("table", table);
     // table = "label_data2";
     this.matchedTables = this.matchedTables.splice(index, 1);
     // console.log(table);
@@ -206,7 +263,7 @@ export class HomeComponent implements OnInit {
         if (res.data) {
           this.insertDataResponse = res.data[0];
         }
-        console.log('this.insertDataResponse', this.insertDataResponse)
+        console.log("this.insertDataResponse", this.insertDataResponse);
         this.toastr.success(res.message);
       },
       (err) => {
@@ -290,8 +347,7 @@ export class HomeComponent implements OnInit {
         this.importingInProgress = false;
         if (error.status === 404) {
           this.toastr.error("Table not found please ask Admin to create.");
-        }
-        else {
+        } else {
           this.toastr.error("Error during import");
         }
       }

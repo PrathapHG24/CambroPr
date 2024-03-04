@@ -14,14 +14,22 @@
 </div>
 <div class="schedulerId" *ngIf="showAddBatch">
   <label for="scheduler-id">Add Scheduler Id</label>
-  <input type="text" name="" id="sceduler" [(ngModel)]="schedulerId" (input)="insertDataInSelectedTable()"/>
+  <input
+    type="text"
+    name=""
+    id="sceduler"
+    [(ngModel)]="schedulerId"
+    (input)="insertDataInSelectedTable()"
+  />
   <!-- <button type="submit" (click)="showAddBatch = false; matchedTables = []">
     Cancel
   </button> -->
   <button type="button" (click)="clearSchedulerId()" *ngIf="!selectedTable">
     Cancel
   </button>
-  <button type="button" (click)="getSchedulerData()" *ngIf="!selectedTable">Ok</button>
+  <button type="button" (click)="getSchedulerData()" *ngIf="!selectedTable">
+    Ok
+  </button>
   <!-- <button type="button" (click)="insertDataInSelectedTable()" *ngIf="selectedTable && selectedTable.tableName">Insert</button> -->
 </div>
 <!-- <button type="button" (click)="checkingSchedule()" class="btn btn-success">
@@ -55,20 +63,24 @@
     <table>
       <tr>
         <th *ngFor="let item of insertDataResponse | keyvalue">
-          {{item.key}}
+          {{ item.key }}
         </th>
       </tr>
       <tr>
         <td *ngFor="let item of insertDataResponse | keyvalue">
-          {{item.value}}
+          {{ item.value }}
         </td>
       </tr>
     </table>
   </div>
-  <button  class="btn btn-info" style="margin:1rem auto;" (click)="onCloseBatch()">Close Batch</button>
+  <button
+    class="btn btn-info"
+    style="margin: 1rem auto"
+    (click)="onCloseBatchConfirmation()"
+  >
+    Close Batch
+  </button>
 </div>
-
-  
 
 <div *ngIf="isUserAdmin()">
   <div class="container-xl">
@@ -80,7 +92,6 @@
               <h4><b>Available Databases</b></h4>
             </div>
             <div class="col-sm-6">
-              
               <button
                 *ngIf="isUserAdmin()"
                 class="btn btn-success"
