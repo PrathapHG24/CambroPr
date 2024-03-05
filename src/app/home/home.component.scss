@@ -92,12 +92,13 @@ table {
   overflow: auto;
   margin: 0 2rem;
 
-  th, td {
+  th,
+  td {
     padding: 0.4rem;
   }
-  
 }
 
 :host {
   text-align: center;
+  background: #0f51;
 }

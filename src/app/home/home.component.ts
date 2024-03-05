@@ -165,6 +165,16 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getSchedulerDataAndInsert() {
+    if (
+      !this.selectedTable &&
+      this.schedulerId.length === 13 &&
+      this.matchedTables.length > 0
+    ) {
+      this.SaveTable(this.matchedTables[0], 0);
+    }
+  }
+
   clearSchedulerId() {
     this.schedulerId = "";
   }
