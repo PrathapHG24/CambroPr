@@ -4,47 +4,66 @@
     <button
       type="button"
       class="btn btn-success"
-      (click)="opennConnectModal(table); resetBatchStatus()"
+      (click)="opennConnectModal(table)"
       *ngIf="!showAddBatch"
     >
       Open batch
     </button>
   </div>
 </div>
-<div class="schedulerId" *ngIf="showAddBatch">
-  <label for="scheduler-id">Add Scheduler Id</label>
-  <input
-    type="text"
-    name=""
-    id="sceduler"
-    [(ngModel)]="schedulerId"
-    (input)="insertDataInSelectedTable()"
-  />
-  <button type="button" (click)="clearSchedulerId()" *ngIf="!selectedTable">
-    Cancel
-  </button>
-  <button type="button" (click)="getSchedulerData()" *ngIf="!selectedTable">
-    Ok
-  </button>
+
+<div *ngIf="showAddBatch">
+  <div class="schedulerId">
+    <div *ngIf="!selectedTable">
+      <!-- If no table is selected, display the input box for schedule ID -->
+      <label for="scheduler-id">Add Scheduler Id</label>
+      <input
+        type="text"
+        name=""
+        id="sceduler"
+        [(ngModel)]="schedulerId"
+        (input)="insertDataInSelectedTable()"
+      />
+      <button type="button" (click)="clearSchedulerId()">Cancel</button>
+      <button type="button" (click)="getSchedulerData()">Ok</button>
+    </div>
+  </div>
+  <div *ngIf="selectedTable">
+    <!-- Display inserted schedule ID when a table is selected -->
+    <table>
+      <tr>
+        <td style="border: 1px solid black">Schedule ID: {{ schedulerId }}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
-<div *ngIf="matchedTables.length > 0 && showAddBatch">
+<div *ngIf="matchedTables.length > 0">
+  <!-- Display matched tables -->
   <table>
+    <!-- Header row -->
     <tr>
       <th>Table Name</th>
       <th>Database Name</th>
     </tr>
 
+    <!-- Data rows -->
     <tr *ngFor="let _table of matchedTables; let i = index">
       <td>{{ _table.tableName }}</td>
       <td>{{ _table.databaseName }}</td>
+
+      <!-- Display buttons or additional data based on conditions -->
       <ng-container *ngIf="!selectedTable">
+        <!-- Call SaveTable directly without displaying a button -->
         <td>{{ SaveTable(_table, i) }}</td>
       </ng-container>
     </tr>
   </table>
+</div>
 
-  <div *ngIf="selectedTable" class="insertData">
+<div *ngIf="selectedTable">
+  <div class="insertData">
+    <!-- Display inserted data when a table is selected -->
     <table>
       <tr>
         <th *ngFor="let item of insertDataResponse | keyvalue">
@@ -58,6 +77,7 @@
       </tr>
     </table>
   </div>
+
   <button
     class="btn btn-info"
     style="margin: 1rem auto"
@@ -66,6 +86,10 @@
     Close Batch
   </button>
 </div>
+<!-- <button class="btn btn-info" style="margin: 1rem auto" (click)="onCloseBatchConfirmation()">
+    Close Batch
+  </button>
+</div> -->
 
 <div *ngIf="isUserAdmin()">
   <div class="container-xl">
@@ -117,7 +141,8 @@
                   class="btn"
                   ><i class="fas fa-eye view"></i
                 ></a>
-
+                <!-- <a href="#" [routerLink]="['/Editdatabase/', database.name]" class="btn"><i
+                  class="fa fa-edit edit"></i></a> -->
                 <button
                   *ngIf="isUserAdmin()"
                   type="button"
@@ -136,6 +161,17 @@
           </tbody>
         </table>
       </div>
+      <!-- <div class="json-import-section">
+        <h4><b>Import JSON</b></h4>
+        <textarea
+          [(ngModel)]="jsonInput"
+          placeholder="Enter JSON here..."
+          rows="4"
+          cols="50"
+        ></textarea>
+        <button class="btn btn-success" (click)="importJSON()">Import</button>
+      </div> -->
     </div>
+      
   </div>
 </div>
