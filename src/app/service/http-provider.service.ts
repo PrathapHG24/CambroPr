@@ -14,7 +14,8 @@ var httpLink = {
   adduser: "http://localhost:8080/user/",
   createTable: apiUrl + "/api",
   dropTableByName: apiUrl + "/api/dropTable",
- 
+  updateTagUrl: apiUrl + '/api/saveJsonKeyAsvalueAndTag',
+  insertDataToPlc: apiUrl + '/api/insertDataToPlc'
 }
 
 
@@ -92,6 +93,18 @@ export class HttpProviderService {
   updateEndTime(queryParams:any) {
     const url = `http://localhost:8080/mapping/updateEndTime?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}&scheduleID=${queryParams.schedulerId}`;
     return this.webApiService.post(url, null);
+  }
+
+  getSchedulerTags() {
+    return this.webApiService.get(httpLink.updateTagUrl);
+  }
+
+  updateTag(payload:any) {
+    return this.webApiService.post(httpLink.updateTagUrl, payload);
+  }
+
+  insertDataToPlc(payload:any) {
+    return this.webApiService.post(httpLink.insertDataToPlc, payload);
   }
 
   // /api/{{selectedDatabas}}/table/create/manoj

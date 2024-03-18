@@ -122,6 +122,8 @@ export class HomeComponent implements OnInit {
   ];
   selectedTable = null;
   insertDataResponse = [];
+  schedulerTagsList = [];
+  plcTagMapping = {};
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -275,6 +277,7 @@ export class HomeComponent implements OnInit {
         }
         console.log("this.insertDataResponse", this.insertDataResponse);
         this.toastr.success(res.message);
+        this.getSchedulerTags();
       },
       (err) => {
         clearInterval(this.interval);
@@ -409,4 +412,64 @@ export class HomeComponent implements OnInit {
       (error: any) => {}
     );
   }
+
+  getSchedulerTags() {
+    this.httpProvider.getSchedulerTags().subscribe(
+        (res: any) => {
+          this.schedulerTagsList = res.body.map(tag => {
+            if (tag.plcTag) {
+                tag['editMode'] = false;
+            } else {
+                tag['editMode'] = true;
+            }
+            return tag;
+          });
+
+          if (this.areTagsNotNull(this.schedulerTagsList)) {
+            this.insertDataInPlc();
+          }
+        },
+        (error: any) => {}
+      );
+  }
+
+  updateSchedulerTags() {
+    const payload = {}
+    this.schedulerTagsList.forEach(item => {
+        payload[item.jsonVariable] = item.plcTag;
+    });
+    console.log('updateSchedulerTags', payload)
+    this.httpProvider.updateTag([payload]).subscribe(
+        (res: any) => {
+          this.toastr.success(res.data);
+          this.getSchedulerTags();
+        },
+        (error: any) => {}
+      );
+  }
+
+    areTagsNotNull(tagsList:any[]) {
+        for (let item of tagsList) {
+            if (item['editMode']) {
+                return false; // If any value is null, return false
+            }
+        }
+        return true; // All values are not null
+    }
+
+    insertDataInPlc() {
+        this.schedulerTagsList.forEach(item => {
+            this.plcTagMapping[item.jsonVariable] = item.plcTag;
+        });
+        const payload = {};
+        Object.keys(this.insertDataResponse).map(key => {
+            payload[this.plcTagMapping[key]] = this.insertDataResponse[key]
+        })
+        this.httpProvider.insertDataToPlc([payload]).subscribe(
+            (res: any) => {
+                this.toastr.success('Data inserted to Plc');
+            },
+        (error: any) => {}
+        );
+    }
 }
