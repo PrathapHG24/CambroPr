@@ -64,7 +64,7 @@ export class HttpProviderService {
 
   public fetchScheduleIdData(scheduleId: string) {
 
-    const url = `http://localhost:8081/unattendedops.cambro.com/api/LabelData/GetLabelData/${scheduleId}`
+    const url = `https://unattendedops.cambro.com/api/LabelData/GetLabelData/${scheduleId}`
     return this.webApiService.get(url);
   }
 

@@ -9,7 +9,7 @@ export class JsonDataService {
 
   getJsondata(schId: any) {
     return this.http.get<any>(
-      `http://localhost:8081/unattendedops.cambro.com/api/LabelData/GetLabelData/${schId}`
+      `https://unattendedops.cambro.com/api/LabelData/GetLabelData/${schId}`
     );
   }
 }

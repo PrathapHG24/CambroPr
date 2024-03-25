@@ -73,6 +73,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {"ssl": true},
           "configurations": {
             "production": {
               "browserTarget": "AngularCRUDApplication:build:production"
