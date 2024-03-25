@@ -104,19 +104,68 @@ table {
 }
 
 .schedulerId {
-    position: relative;
+  position: relative;
 }
 
 .schedule-actions {
-    display: inline-block;
+  // display: inline-block;
+  margin-top: 10px;
 }
 
 .tag-table {
-    width: 30% !important;
+  width: 30% !important;
 }
 
 .close-batch {
-    position: absolute;
-    right: 3rem;
-    top: -1.5rem;
+  position: absolute;
+  right: 3rem;
+  top: -1.5rem;
+}
+/* Style for the container */
+.schedulerId {
+  margin: 10px;
+}
+
+/* Style for the label */
+.schedulerId label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 20px; /* Increased font size */
+}
+
+/* Style for the input field */
+.schedulerId input[type="text"] {
+  width: calc(100% - 80%); /* Adjusted width */
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px; /* Adjusted font size */
+}
+
+/* Style for the schedule actions container */
+.schedule-actions {
+  margin-top: 10px;
+}
+
+/* Style for the buttons */
+.schedule-actions button {
+  padding: 6px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Style for the Ok button */
+.schedule-actions button[type="button"]:last-child {
+  background-color: green;
+  color: #fff;
+}
+
+/* Style for the Cancel button */
+.schedule-actions button[type="button"]:first-child {
+  background-color: yellow;
+  color: #131313;
 }
