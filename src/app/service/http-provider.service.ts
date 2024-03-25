@@ -15,7 +15,8 @@ var httpLink = {
   createTable: apiUrl + "/api",
   dropTableByName: apiUrl + "/api/dropTable",
   updateTagUrl: apiUrl + '/api/saveJsonKeyAsvalueAndTag',
-  insertDataToPlc: apiUrl + '/api/insertDataToPlc'
+  insertDataToPlc:"http://127.0.0.1:8083/insertDataToPlc", 
+  // insertDataToPlc: apiUrl + '/api/insertDataToPlc'
 }
 
 
@@ -66,6 +67,11 @@ export class HttpProviderService {
 
     const url = `https://unattendedops.cambro.com/api/LabelData/GetLabelData/${scheduleId}`
     return this.webApiService.get(url);
+  }
+
+  createAutoTable(payload: any, queryParams:any) {
+    const url = `http://localhost:8080/mapping/createTable?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}`;
+    return this.webApiService.post(url, payload);
   }
 
 

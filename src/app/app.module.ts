@@ -30,6 +30,7 @@ import { AuthInterceptorProviders } from './service/auth.interseptor';
 import { Home2Component } from './home2/home2.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { AddAutoTableFormComponent } from './add-auto-table-form/add-auto-table-form.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AddUserComponent } from './add-user/add-user.component';
     CustomModal,
     LoginComponent,
     Home2Component,
-    SchedulerComponent
+    SchedulerComponent,
+    AddAutoTableFormComponent
   ],
   imports: [
     BrowserModule,
