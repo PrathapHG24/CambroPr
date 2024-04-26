@@ -36,7 +36,7 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.databaseName = this.route.snapshot.queryParams["database"];
     this.getdatabaseDetailByName();
-    this.getAllSchedules();
+    // this.getAllSchedules();
   }
 
   async getdatabaseDetailByName() {
@@ -123,7 +123,7 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
           return;
         }
         clearInterval(this.interval);
-        this.httpProvider.saveScheduleId(obj.scheduleId).subscribe((res) => {});
+        // this.httpProvider.saveScheduleId(obj.scheduleId).subscribe((res) => {});
       },
       (err) => {
         clearInterval(this.interval);
@@ -131,12 +131,12 @@ export class DatabaseViewComponent implements OnInit, OnDestroy {
     );
   }
 
-  getAllSchedules() {
-    this.httpProvider.fetchAllScheduelIds().subscribe((res) => {
-      console.log(res);
-      this.scheduleIdList = res.body;
-    });
-  }
+  // getAllSchedules() {
+  //   this.httpProvider.fetchAllScheduelIds().subscribe((res) => {
+  //     console.log(res);
+  //     this.scheduleIdList = res.body;
+  //   });
+  // }
 
   backupDatabase(table) {
     this.httpProvider.saveDBBackup(table.name).subscribe((res) => {

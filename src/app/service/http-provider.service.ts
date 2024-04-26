@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WebApiService } from './web-api.service';
 
-var apiUrl = '';//"http://localhost:8080";
+var apiUrl = '';//"http://:9091";
 
 // var apiUrl = "http://192.168.10.10:105";
 
@@ -10,11 +10,11 @@ var httpLink = {
   getAlldatabase: apiUrl + "/api/database/getAlldatabase",
   dropDatabaseByName: apiUrl + "/api/dropDatabase",
   getdatabaseDetailByName: apiUrl + "/api/database/getdatabaseDetailByName",
-  savedatabase: apiUrl + "/database/savedatabase",
-  adduser: "http://localhost:8080/user/",
-  createTable: apiUrl + "/api",
+  savedatabase: apiUrl + "database/savedatabase",
+  adduser: "user/",
+  createTable: apiUrl + "api",
   dropTableByName: apiUrl + "/api/dropTable",
-  updateTagUrl: apiUrl + '/api/saveJsonKeyAsvalueAndTag',
+  updateTagUrl: apiUrl + 'api/saveJsonKeyAsvalueAndTag',
   insertDataToPlc:"http://127.0.0.1:8083/insertDataToPlc", 
   // insertDataToPlc: apiUrl + '/api/insertDataToPlc'
 }
@@ -66,30 +66,30 @@ export class HttpProviderService {
   public fetchScheduleIdData(scheduleId: string) {
 
     const url = `https://unattendedops.cambro.com/api/LabelData/GetLabelData/${scheduleId}`
-    return this.webApiService.get(url);
+    return this.webApiService.getCambroMachineData(url);
   }
 
   createAutoTable(payload: any, queryParams:any) {
-    const url = `http://localhost:8080/mapping/createTable?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}`;
+    const url = `mapping/createTable?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}`;
     return this.webApiService.post(url, payload);
   }
 
 
   insertData(payload: any, queryParams:any) {
-    const url = `http://localhost:8080/mapping/insertData?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}`;
+    const url = `mapping/insertData?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}`;
     return this.webApiService.post(url, payload);
   }
 
 
   saveScheduleId(scheduleId:any) {
-    const url = `http://localhost:8080/mapping/saveSchedulId?scheduleID=${scheduleId}`;
+    const url = `mapping/saveSchedulId?scheduleID=${scheduleId}`;
     return this.webApiService.post(url, null);
   }
 
-  fetchAllScheduelIds() {
-    const url = `http://localhost:8080/mapping/getAllScheduleId`;
-    return this.webApiService.get(url);
-  }
+  // fetchAllScheduelIds() {
+  //   const url = `https://cambromachine:9091/mapping/getAllScheduleId`;
+  //   return this.webApiService.get(url);
+  // }
 
   saveDBBackup(tableName:string) {
     const url = `api/takebackup/table/${tableName}`;
@@ -97,7 +97,7 @@ export class HttpProviderService {
   }
 
   updateEndTime(queryParams:any) {
-    const url = `http://localhost:8080/mapping/updateEndTime?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}&scheduleID=${queryParams.schedulerId}`;
+    const url = `mapping/updateEndTime?dbName=${queryParams.dbName}&tableName=${queryParams.tableName}&scheduleID=${queryParams.schedulerId}`;
     return this.webApiService.post(url, null);
   }
 
@@ -110,7 +110,7 @@ export class HttpProviderService {
   }
 
   insertDataToPlc(payload:any) {
-    return this.webApiService.post(httpLink.insertDataToPlc, payload);
+    return this.webApiService.postDataToPlc(httpLink.insertDataToPlc, payload);
   }
 
   // /api/{{selectedDatabas}}/table/create/manoj
