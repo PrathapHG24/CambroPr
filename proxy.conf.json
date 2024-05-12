@@ -1,5 +1,5 @@
 {
     "/": {
-        "target": "https://cambromachine:9091"
+        "target": "http://localhost:8080"
     }
 }

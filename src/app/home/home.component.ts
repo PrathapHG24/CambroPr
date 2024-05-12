@@ -160,14 +160,26 @@ export class HomeComponent implements OnInit {
     });
   }
   getSchedulerData() {
-    this.jsonService.getJsondata(this.schedulerId).subscribe((data) => {
-      this.jsonService.hideLogoutBtn = true;
+    return this.jsonService.getJsondata(this.schedulerId).subscribe((data) => {
       this.importJSONDATA(data[0]);
       this.jsonData = data;
       this.objectVar = this.schedulerId;
-      return this.jsonData;
+      // Now that we have received the data, let's save the schedule ID to the backend
+      //this.saveScheduleIdToBackend(this.schedulerId);
     });
   }
+  // saveScheduleIdToBackend(schedulerId: string) {
+  //   this.jsonService.saveSchedulerId(schedulerId).subscribe(
+  //     (response) => {
+  //       console.log('Schedule ID saved successfully:', response);
+  //       // Handle success response here
+  //     },
+  //     (error) => {
+  //       console.error('Error saving Schedule ID:', error);
+  //       // Handle error response here
+  //     }
+  //   );
+  // }
 
   getSchedulerDataAndInsert() {
     if (
@@ -201,7 +213,7 @@ export class HomeComponent implements OnInit {
 
   onCloseBatch() {
     this.updateEndTime();
-    this.jsonService.hideLogoutBtn = false;
+    this.jsonService.hideLogoutBtn = false;
   }
 
   updateEndTime() {
@@ -313,6 +325,14 @@ export class HomeComponent implements OnInit {
     this.router.navigate(["adduser"]);
   }
 
+  viewuserEvent() {
+    this.router.navigate(["viewuserEvent"]);
+  }
+
+  userManagement() {
+    this.router.navigate(["userManagement"]);
+  }
+
   deletedatabaseConfirmation(database: any) {
     this.modalService
       .open(MODALS["deleteModal"], {
@@ -418,64 +438,64 @@ export class HomeComponent implements OnInit {
 
   getSchedulerTags() {
     this.httpProvider.getSchedulerTags().subscribe(
-        (res: any) => {
-          this.schedulerTagsList = res.body.map(tag => {
-            if (tag.plcTag) {
-                tag['editMode'] = false;
-            } else {
-                tag['editMode'] = true;
-            }
-            return tag;
-          });
-
-          if (this.areTagsNotNull(this.schedulerTagsList)) {
-            this.insertDataInPlc();
+      (res: any) => {
+        this.schedulerTagsList = res.body.map((tag) => {
+          if (tag.plcTag) {
+            tag["editMode"] = false;
+          } else {
+            tag["editMode"] = true;
           }
-        },
-        (error: any) => {}
-      );
+          return tag;
+        });
+
+        if (this.areTagsNotNull(this.schedulerTagsList)) {
+          this.insertDataInPlc();
+        }
+      },
+      (error: any) => {}
+    );
   }
 
   updateSchedulerTags() {
-    const payload = {}
-    this.schedulerTagsList.forEach(item => {
-        payload[item.jsonVariable] = item.plcTag;
+    const payload = {};
+    this.schedulerTagsList.forEach((item) => {
+      payload[item.jsonVariable] = item.plcTag;
     });
-    console.log('updateSchedulerTags', payload)
+    console.log("updateSchedulerTags", payload);
     this.httpProvider.updateTag([payload]).subscribe(
-        (res: any) => {
-          this.toastr.success(res.data);
-          this.getSchedulerTags();
-        },
-        (error: any) => {}
-      );
+      (res: any) => {
+        this.toastr.success(res.data);
+        this.getSchedulerTags();
+      },
+      (error: any) => {}
+    );
   }
 
-    areTagsNotNull(tagsList:any[]) {
-        for (let item of tagsList) {
-            if (item['editMode']) {
-                return false; // If any value is null, return false
-            }
-        }
-        return true; // All values are not null
+  areTagsNotNull(tagsList: any[]) {
+    for (let item of tagsList) {
+      if (item["editMode"]) {
+        return false; // If any value is null, return false
+      }
     }
+    return true; // All values are not null
+  }
 
-    insertDataInPlc() {
-      this.insertingPlcData = true;
-        this.schedulerTagsList.forEach(item => {
-            this.plcTagMapping[item.jsonVariable] = item.plcTag;
-        });
-        const payload = {};
-        Object.keys(this.insertDataResponse).map(key => {
-            payload[this.plcTagMapping[key]] = this.insertDataResponse[key]
-        })
-        this.httpProvider.insertDataToPlc([payload]).subscribe(
-            (res: any) => {
-              this.insertingPlcData = false;
-                // this.toastr.success('Data inserted to Plc');
-                this.toastr.success(res.message);
-            },
-        (error: any) => {}
-        );
-    }
+  insertDataInPlc() {
+    this.insertingPlcData = true;
+    this.schedulerTagsList.forEach((item) => {
+      this.plcTagMapping[item.jsonVariable] = item.plcTag;
+    });
+    const payload = {};
+    Object.keys(this.insertDataResponse).map((key) => {
+      payload[this.plcTagMapping[key]] = this.insertDataResponse[key];
+    });
+    this.httpProvider.insertDataToPlc([payload]).subscribe(
+      (res: any) => {
+        this.insertingPlcData = false;
+        // this.toastr.success('Data inserted to Plc');
+        this.toastr.success(res.message);
+      },
+      (error: any) => {}
+    );
+  }
 }

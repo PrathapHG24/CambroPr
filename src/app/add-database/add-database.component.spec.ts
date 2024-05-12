@@ -1,25 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AdddatabaseComponent } from './add-database.component';
+import { serEventComponent } from "./add-database.component";
 
-describe('AdddatabaseComponent', () => {
-  let component: AdddatabaseComponent;
-  let fixture: ComponentFixture<AdddatabaseComponent>;
+describe("serEventComponent", () => {
+  let component: serEventComponent;
+  let fixture: ComponentFixture<serEventComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdddatabaseComponent]
-    })
-      .compileComponents();
+      declarations: [serEventComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdddatabaseComponent);
+    fixture = TestBed.createComponent(serEventComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
