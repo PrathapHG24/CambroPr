@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LoginService } from "src/app/service/login.service";
+import { JsonDataService } from "src/json-data.service";
 
 import Swal from "sweetalert2";
 
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private snack: MatSnackBar,
     private login: LoginService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private jsonService: JsonDataService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,7 @@ export class LoginComponent implements OnInit {
               console.log("Admin");
               this.router.navigate(["/home"]); // Navigate to '/home'
             } else {
+              this.jsonService.hideHomeBtn = true;
               console.log("User");
               if (this.scheduleId) {
                 this.router.navigate(["/home"], {

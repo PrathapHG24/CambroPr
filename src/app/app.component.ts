@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpProviderService } from "./service/http-provider.service";
 import { AuthenticationService } from "./services/authentication.service";
+import { JsonDataService } from "src/json-data.service";
 
 @Component({
   selector: "app-root",
@@ -12,7 +13,8 @@ export class AppComponent {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private httpProviderService: HttpProviderService
+    private httpProviderService: HttpProviderService,
+    public jsondataService: JsonDataService
   ) {}
 
   HomeClick() {
@@ -23,6 +25,7 @@ export class AppComponent {
   logOut() {
     // Call the existing logout method to perform any local logout logic
     this.authenticationService.logout();
+    this.jsondataService.hideHomeBtn = false;
 
     // Call the backend logout URL
     this.httpProviderService.logout().subscribe(

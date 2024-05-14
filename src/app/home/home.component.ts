@@ -138,7 +138,8 @@ export class HomeComponent implements OnInit {
     private http: HttpClient,
     private loginService: LoginService,
     private jsonService: JsonDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private jsondataService: JsonDataService
   ) {}
   reload() {
     this.getAlldatabase();
@@ -236,7 +237,7 @@ export class HomeComponent implements OnInit {
     this.updateEndTime();
     this.isBatchOpen = false; // Update the flag when batch is closed
     sessionStorage.setItem("isBatchOpen", "false"); // Store batch status in sessionStorage
-    this.jsonService.hideLogoutBtn = false;
+    this.jsonService.hideHomeBtn = false;
     window.location.href = "https://localhost:53275";
   }
 

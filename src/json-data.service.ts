@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 export class JsonDataService {
   constructor(private http: HttpClient) {}
 
-  public hideLogoutBtn: boolean = false;
+  public hideHomeBtn: boolean = false;
 
   getJsondata(schId: any) {
     return this.http.get<any>(
