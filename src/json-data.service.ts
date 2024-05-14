@@ -14,4 +14,10 @@ export class JsonDataService {
       `http://localhost:8081/unattendedops.cambro.com/api/LabelData/GetLabelData/${schId}`
     );
   }
+  saveSchedulerId(scheduleId: any) {
+    return this.http.post<any>(
+      `http://localhost:8080/mapping/saveSchedulerId?scheduleID=${scheduleId}`,
+      {}
+    );
+  }
 }

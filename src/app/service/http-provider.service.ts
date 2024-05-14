@@ -115,5 +115,10 @@ export class HttpProviderService {
     return this.webApiService.post(httpLink.insertDataToPlc, payload);
   }
 
-  // /api/{{selectedDatabas}}/table/create/manoj
+  logout(): Observable<any> {
+    return this.webApiService.post(
+      "http://localhost:8080/user-event/logout",
+      {}
+    );
+  }
 }

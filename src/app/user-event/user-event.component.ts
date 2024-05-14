@@ -40,7 +40,7 @@ export class UserEventComponent implements OnInit {
 
   async getTableData() {
     this.webApiService
-      .get("api/boxes/table-data/data_table")
+      .get("api/boxes/table-data/user_events")
       .subscribe((data) => {
         if (data !== undefined) {
           console.log(this.databaseName);

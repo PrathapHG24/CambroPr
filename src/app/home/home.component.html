@@ -7,7 +7,7 @@
       (click)="opennConnectModal(table); resetBatchStatus()"
       *ngIf="!showAddBatch"
     >
-      Open batch
+      Start batch
     </button>
   </div>
 </div>
@@ -73,7 +73,7 @@
     Close Batch
   </button> -->
 
-  <div style="margin: 4rem 2rem">
+  <div style="margin: 4rem 2rem" *ngIf="!params.scheduleId">
     <!-- Tag Update -->
     <strong>Tag Update:</strong>
     <table class="tag-table">
@@ -105,6 +105,19 @@
       Update Tags
     </button>
     <!-- <button class="btn btn-info" (click)="insertDataInPlc()" *ngIf="areTagsNotNull(schedulerTagsList)">Insert Data to plc</button> -->
+  </div>
+
+  <div class="open-batch">
+    <div *ngIf="!isUserAdmin()">
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="opennConnectModal(table); resetBatchStatus()"
+        *ngIf="!showAddBatch && !isBatchOpen"
+      >
+        Start batch
+      </button>
+    </div>
   </div>
 
   <div *ngIf="insertingPlcData">

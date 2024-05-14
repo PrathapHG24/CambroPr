@@ -32,7 +32,7 @@ import { SchedulerComponent } from "./scheduler/scheduler.component";
 import { AddUserComponent } from "./add-user/add-user.component";
 import { AddAutoTableFormComponent } from "./add-auto-table-form/add-auto-table-form.component";
 import { UserEventComponent } from "./user-event/user-event.component";
-import { UserManagementComponent } from './user-management/user-management.component';
+import { UserManagementComponent } from "./user-management/user-management.component";
 
 @NgModule({
   declarations: [
